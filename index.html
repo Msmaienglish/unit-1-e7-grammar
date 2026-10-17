@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Tiếng Anh 7 - Hobbies | GV Ms Tuyet Mai FTU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #1e1e2f;
+            --card-bg: #2a2a40;
+            --text-main: #ffffff;
+            --text-muted: #a0a0b5;
+            --primary: #9d4edd;
+            --primary-hover: #c77dff;
+            --correct: #00D26A;
+            --wrong: #FF4757;
+            --btn-bg: #383854;
+            --btn-shadow: #202030;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Nunito', sans-serif;
+            color: var(--text-main);
+            /* Nền loang (gradient) kết hợp họa tiết SVG vui nhộn (ngôi sao, đám mây, hoa, mèo) lơ lửng */
+            background: 
+                url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M50,30 L55,45 L70,45 L58,55 L62,70 L50,60 L38,70 L42,55 L30,45 L45,45 Z' /%3E%3Cpath d='M250,130 L255,145 L270,145 L258,155 L262,170 L250,160 L238,170 L242,155 L230,145 L245,145 Z' /%3E%3Ccircle cx='150' cy='250' r='15' /%3E%3Ccircle cx='135' cy='260' r='10' /%3E%3Ccircle cx='165' cy='260' r='10' /%3E%3Ccircle cx='350' cy='50' r='20' /%3E%3Cpath d='M300,300 Q320,280 340,300 Q330,330 300,300' /%3E%3Cpath d='M80,320 L90,300 L100,320 L120,330 L100,340 L90,360 L80,340 L60,330 Z' /%3E%3C!-- Hình mèo đơn giản --%3E%3Cpath d='M200,80 L190,60 L210,70 L230,60 L220,80 A20,20 0 0,1 200,80 Z' /%3E%3C/g%3E%3C/svg%3E"),
+                radial-gradient(circle at 15% 50%, rgba(157, 78, 221, 0.2), transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(0, 210, 106, 0.15), transparent 50%),
+                var(--bg-dark);
+            background-blend-mode: screen;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 30px 15px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+            display: none;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 { color: var(--primary-hover); text-align: center; font-weight: 900; }
+        .subtitle { text-align: center; color: var(--text-muted); font-style: italic; margin-bottom: 30px; }
+
+        /* Khung Từ vựng */
+        .vocab-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 6px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .vocab-box h3 { margin-top: 0; color: #f9ca24; }
+        .vocab-list { margin-left: 10px; line-height: 1.8; font-size: 17px; }
+        .vocab-list b { color: #f0932b; }
+
+        /* Nút chung 3D */
+        .btn-3d {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            border: none;
+            border-radius: 18px;
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            width: 100%;
+            text-align: left;
+            margin-bottom: 15px;
+            background-color: var(--btn-bg);
+            color: white;
+            box-shadow: 0 8px 0 var(--btn-shadow);
+            position: relative;
+            top: 0;
+        }
+
+        .btn-3d:hover:not(:disabled) {
+            transform: scale(1.02) translateY(-2px);
+            box-shadow: 0 10px 0 var(--btn-shadow);
+            background-color: #454565;
+        }
+
+        .btn-3d:active:not(:disabled) {
+            transform: scale(1) translateY(8px);
+            box-shadow: 0 0 0 var(--btn-shadow);
+        }
+
+        .btn-3d:disabled { cursor: not-allowed; opacity: 0.9; }
+
+        .btn-primary {
+            background-color: var(--primary);
+            box-shadow: 0 8px 0 #5a189a;
+            text-align: center;
+        }
+        .btn-primary:hover:not(:disabled) { background-color: var(--primary-hover); box-shadow: 0 10px 0 #5a189a; }
+
+        /* Hiệu ứng Đúng / Sai */
+        .correct-btn {
+            background-color: var(--correct) !important;
+            box-shadow: 0 8px 0 #008f48 !important;
+            color: #fff !important;
+        }
+        .wrong-btn {
+            background-color: var(--wrong) !important;
+            box-shadow: 0 8px 0 #a51d2a !important;
+            color: #fff !important;
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-3px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
+        }
+
+        /* Khung câu hỏi */
+        .progress-text { font-weight: bold; color: var(--primary-hover); margin-bottom: 10px; font-size: 16px; }
+        .question-text { font-size: 24px; font-weight: 800; margin-bottom: 25px; line-height: 1.4; }
+
+        /* Gap Fill (Điền từ) */
+        .gap {
+            display: inline-block;
+            min-width: 70px;
+            height: 35px;
+            border-bottom: 4px dashed var(--primary-hover);
+            margin: 0 8px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 900;
+            color: #f9ca24;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .gap:hover { background-color: rgba(199, 125, 255, 0.2); border-radius: 5px; }
+        .gap.filled-correct { border-bottom: 4px solid var(--correct); color: var(--correct); }
+        .gap.filled-wrong { border-bottom: 4px solid var(--wrong); color: var(--wrong); }
+
+        /* Popup Gap Fill */
+        .gap-popup {
+            display: none;
+            position: absolute;
+            background: #1e1e2f;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 0 2px var(--primary);
+            padding: 15px;
+            z-index: 100;
+            width: 250px;
+        }
+        .gap-popup button {
+            background: var(--btn-bg); color: white; border: none; border-radius: 10px;
+            padding: 10px; width: 100%; margin-bottom: 8px; cursor: pointer; font-family: 'Nunito'; font-weight: bold; font-size: 16px;
+        }
+        .gap-popup button:hover { background: var(--primary); }
+
+        /* Khung giải thích Siêu chi tiết */
+        .explanation-box {
+            display: none;
+            background: #1e1e2f;
+            border: 2px solid #454565;
+            border-left: 8px solid var(--primary-hover);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 25px;
+            font-size: 17px;
+            line-height: 1.6;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .exp-step { margin-bottom: 18px; }
+        .exp-title { font-weight: 900; color: #00D26A; font-size: 18px; margin-bottom: 8px; display: block; text-transform: uppercase;}
+        .exp-content { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; }
+
+        /* Ngữ âm */
+        u { text-decoration-color: var(--wrong); text-decoration-thickness: 3px; }
+
+        canvas#confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="container">
+    <div class="card" id="vocab-screen" style="display: block;">
+        <h1>📖 CẤU TRÚC CHỈ SỞ THÍCH UNIT 1 </h1>
+        <p class="subtitle">Bản quyền: GV Ms Tuyet Mai FTU - Hãy đọc KỸ trước khi làm bài để đạt 100 điểm nhé!</p>
+        
+        <div class="vocab-box">
+            <h3>1. Động từ CHỈ đi với V-ing (Cực thích / Cực ghét)</h3>
+            <div class="vocab-list">
+                - <b>Adore</b> + V-ing: Mê mẩn, tôn sùng.<br>
+                - <b>Enjoy</b> + V-ing: Thưởng thức, tận hưởng.<br>
+                - <b>Fancy</b> + V-ing: Muốn, thích (thân mật).<br>
+                - <b>Dislike</b> + V-ing: Không thích.<br>
+                - <b>Detest</b> + V-ing: Ghét cay ghét đắng (Cực kỳ ghét).
+            </div>
+        </div>
+
+        <div class="vocab-box">
+            <h3>2. Động từ đi được với CẢ V-ing VÀ To V</h3>
+            <div class="vocab-list">
+                - <b>Like, Love, Hate, Prefer</b> (Thích, Yêu, Ghét, Thích hơn).<br>
+                <i>VD: I love going / to go to the cinema.</i>
+            </div>
+        </div>
+
+        <div class="vocab-box">
+            <h3>3. Các cấu trúc mở rộng (Collocations BẮT BUỘC NHỚ)</h3>
+            <div class="vocab-list">
+                - S + tobe + <b>into</b> + V-ing/N: Thích thú, đam mê.<br>
+                - S + tobe + <b>a big fan of</b> + V-ing/N: Là người hâm mộ bự của...<br>
+                - S + tobe + <b>interested in</b> + V-ing/N: Quan tâm, hứng thú với...<br>
+                - S + tobe + <b>addicted to</b> + V-ing/N: Bị nghiện (game, TV...).<br>
+                - S + tobe + <b>hooked on</b> + V-ing/N: Bị mê hoặc, cuốn hút bởi...<br>
+                - S + tobe + <b>keen on</b> + V-ing/N: Say mê, yêu thích điều gì.<br>
+                - S + tobe + <b>crazy about</b> + V-ing/N: Cuồng nhiệt, phát điên vì...<br>
+                - S + tobe + <b>fond of</b> + V-ing/N: Yêu thích (Cấu trúc mở rộng).
+            </div>
+        </div>
+        
+        <button class="btn-3d btn-primary" onclick="startQuiz()">SẴN SÀNG LÀM BÀI 🚀</button>
+    </div>
+
+    <div class="card" id="quiz-screen">
+        <div class="progress-text" id="progress-text">Câu 1 / 40</div>
+        <div class="question-text" id="question-text"></div>
+        
+        <div id="options-container"></div>
+
+        <div class="explanation-box" id="explanation-box"></div>
+
+        <button class="btn-3d btn-primary" id="next-btn" style="display:none; margin-top: 25px;" onclick="nextQuestion()">Câu Tiếp Theo ❯</button>
+        <button class="btn-3d btn-primary" id="submit-btn" style="display:none; margin-top: 25px; background-color: #00D26A; box-shadow: 0 8px 0 #008f48;" onclick="showResult()">Nộp Bài 🏆</button>
+    </div>
+
+    <div class="card" id="result-screen">
+        <h1 style="font-size: 45px; margin-bottom: 0;">🎉 KẾT QUẢ 🎉</h1>
+        <p class="subtitle" style="font-size: 20px;">GV Ms Tuyet Mai FTU</p>
+        <div style="font-size: 60px; font-weight: 900; color: var(--correct); text-align: center; margin: 30px 0; text-shadow: 0 5px 15px rgba(0,210,106,0.4);" id="score-text">0 / 40</div>
+        <h2 id="feedback-text" style="color: #f9ca24; margin-bottom: 40px;"></h2>
+        <button class="btn-3d btn-primary" onclick="location.reload()">Làm Lại Bài 🔄</button>
+    </div>
+</div>
+
+<div id="gap-popup" class="gap-popup"></div>
+
+<script>
+    // WEB AUDIO API - TẠO ÂM THANH KHÔNG CẦN LINK NGOÀI
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playDing() {
+        if(audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
+        osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.15); // A6
+        gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.5);
+    }
+
+    function playWrong() {
+        if(audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(200, audioCtx.currentTime + 0.15);
+        osc.frequency.linearRampToValueAtTime(150, audioCtx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.6);
+    }
+
+    // HIỆU ỨNG CONFETTI BẰNG CANVAS
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+    
+    function fireConfetti() {
+        for(let i=0; i<120; i++) {
+            particles.push({
+                x: canvas.width / 2, y: canvas.height / 2,
+                vx: (Math.random() - 0.5) * 25, vy: (Math.random() - 1) * 25,
+                color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+                size: Math.random() * 10 + 5,
+                rot: Math.random() * 360,
+                rotSpeed: (Math.random() - 0.5) * 10
+            });
+        }
+        animateConfetti();
+    }
+    
+    function animateConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+        particles.forEach(p => {
+            p.x += p.vx; p.y += p.vy; p.vy += 0.8; // Trọng lực
+            p.rot += p.rotSpeed;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot * Math.PI / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+            ctx.restore();
+            if(p.y < canvas.height) active = true;
+        });
+        if(active) requestAnimationFrame(animateConfetti);
+        else particles = [];
+    }
+
+    // HÀM TẠO GIẢI THÍCH MẪU CHUẨN ĐỂ RÚT GỌN CODE
+    function genExp(dich, a, b, c, d, dung, sai) {
+        return `
+            <div class="exp-step"><span class="exp-title">Bước 1: Dịch nghĩa</span><div class="exp-content">${dich}</div></div>
+            <div class="exp-step"><span class="exp-title">Bước 2: Phân tích 4 đáp án</span><div class="exp-content">A. ${a}<br>B. ${b}<br>C. ${c}<br>D. ${d}</div></div>
+            <div class="exp-step"><span class="exp-title">Bước 3: Tại sao đáp án này ĐÚNG?</span><div class="exp-content">${dung}</div></div>
+            <div class="exp-step"><span class="exp-title">Bước 4: Tại sao 3 đáp án kia SAI?</span><div class="exp-content">${sai}</div></div>
+        `;
+    }
+
+    // DỮ LIỆU CÂU HỎI (40 Câu: 10 Lý thuyết, 15 MCQ Vận dụng, 15 Gap Fill Vận dụng)
+    const db = [];
+
+    // --- PHẦN 1: 10 CÂU LÝ THUYẾT (MCQ) ---
+    db.push({
+        type: "mcq", q: "Câu 1 (Lý thuyết): Động từ nào sau đây CHỈ được theo sau bởi V-ing?", options: ["A. adore", "B. love", "C. like", "D. prefer"], ans: 0,
+        exp: genExp("Trong các từ chỉ sự yêu/ghét, từ nào bắt buộc cộng với V-ing?", "adore (v): mê mẩn.", "love (v): yêu.", "like (v): thích.", "prefer (v): thích hơn.", "Chọn A vì theo lý thuyết, 'adore, enjoy, fancy, dislike, detest' chỉ cộng với V-ing.", "B, C, D sai vì 'like, love, hate, prefer' có thể cộng cả V-ing VÀ To V.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 2 (Lý thuyết): Cấu trúc nào mang ý nghĩa 'Là người hâm mộ bự của...'?", options: ["A. S + tobe + into + V-ing", "B. S + tobe + keen on + V-ing", "C. S + tobe + a big fan of + V-ing", "D. S + tobe + hooked on + V-ing"], ans: 2,
+        exp: genExp("Tìm cấu trúc đúng mang nghĩa 'hâm mộ bự'.", "Tobe into: Thích thú.", "Tobe keen on: Say mê.", "Tobe a big fan of: Là fan hâm mộ bự của...", "Tobe hooked on: Bị mê hoặc.", "Chọn C vì 'a big fan' dịch sát nghĩa đen là 'người hâm mộ lớn/bự'.", "A, B, D sai vì ý nghĩa không khớp hoàn toàn với yêu cầu đề bài, dù chúng đều mang nghĩa thích.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 3 (Lý thuyết): Giới từ nào đi kèm với tính từ 'fond' trong cấu trúc chỉ sự yêu thích?", options: ["A. in", "B. of", "C. on", "D. to"], ans: 1,
+        exp: genExp("Giới từ đi sau 'fond' là gì?", "in (giới từ): trong.", "of (giới từ): của / thuộc về.", "on (giới từ): trên.", "to (giới từ): tới.", "Chọn B vì cụm từ cố định (Collocation) là 'be fond of' (yêu thích).", "A, C, D sai ngữ pháp. (Lưu ý: in đi với interested, on đi với keen, to đi với addicted).")
+    });
+    db.push({
+        type: "mcq", q: "Câu 4 (Lý thuyết): Động từ 'detest' có nghĩa là gì?", options: ["A. Thích nhẹ nhàng", "B. Ghét cay ghét đắng", "C. Quan tâm đến", "D. Đam mê"], ans: 1,
+        exp: genExp("Nghĩa tiếng Việt của động từ detest là gì?", "Thích nhẹ nhàng (like).", "Ghét cay ghét đắng (detest).", "Quan tâm (interested).", "Đam mê (passionate/into).", "Chọn B. Theo bảng từ vựng Ms Mai cung cấp, 'detest' là mức độ ghét mạnh nhất (cực kỳ ghét).", "A, C, D mang nghĩa tích cực, hoàn toàn ngược với detest.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 5 (Lý thuyết): Chọn cụm từ đồng nghĩa với 'I like playing sports'.", options: ["A. I detest playing sports", "B. I am addicted to play sports", "C. I am interested in playing sports", "D. I dislike playing sports"], ans: 2,
+        exp: genExp("Tôi thích chơi thể thao.", "detest (v): ghét.", "addicted to + V-ing: nghiện (nhưng sai ngữ pháp ở đáp án vì dùng 'play').", "interested in + V-ing: yêu thích, quan tâm.", "dislike (v): không thích.", "Chọn C vì cấu trúc 'interested in + V-ing' đúng ngữ pháp và mang nghĩa tương đương với 'like'.", "A, D sai nghĩa (ghét). B sai ngữ pháp vì 'addicted to' phải cộng V-ing (playing).")
+    });
+    db.push({
+        type: "mcq", q: "Câu 6 (Lý thuyết): 'hooked ____' đi với giới từ gì?", options: ["A. in", "B. at", "C. on", "D. of"], ans: 2,
+        exp: genExp("Hoàn thành cụm từ 'hooked...'", "in", "at", "on", "of", "Chọn C vì thành ngữ cố định là 'be hooked on' (bị mê hoặc bởi cái gì).", "A, B, D sai giới từ. Học thuộc lòng: hooked on, keen on.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 7 (Lý thuyết): 'addicted ____' đi với giới từ gì?", options: ["A. to", "B. in", "C. about", "D. with"], ans: 0,
+        exp: genExp("Hoàn thành cụm từ 'addicted...'", "to", "in", "about", "with", "Chọn A vì thành ngữ cố định là 'be addicted to' (nghiện cái gì).", "B, C, D sai giới từ. Lưu ý chữ 'to' ở đây là giới từ, nên động từ theo sau nó vẫn phải là V-ing.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 8 (Lý thuyết): Động từ nào sau đây mang nghĩa là 'Muốn, thích (thân mật)'?", options: ["A. prefer", "B. fancy", "C. adore", "D. hate"], ans: 1,
+        exp: genExp("Từ vựng về sự yêu thích.", "prefer (v): thích hơn.", "fancy (v): thích, muốn (ngôn ngữ thân mật).", "adore (v): mê mẩn, tôn sùng.", "hate (v): ghét.", "Chọn B vì 'fancy' là động từ thường dùng trong giao tiếp thân mật mang nghĩa thích/muốn.", "A, C, D sai nghĩa.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 9 (Lý thuyết): Sau cụm 'crazy about', ta dùng loại từ gì?", options: ["A. V-ing hoặc Noun", "B. To V", "C. Động từ nguyên mẫu", "D. Tính từ"], ans: 0,
+        exp: genExp("Loại từ đứng sau 'crazy about'.", "Danh động từ (V-ing) hoặc Danh từ (Noun).", "Động từ nguyên mẫu có to.", "Động từ không chia.", "Tính từ.", "Chọn A vì 'about' là giới từ. Theo quy tắc tiếng Anh, sau giới từ luôn là Noun hoặc V-ing.", "B, C, D sai hoàn toàn quy tắc giới từ.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 10 (Lý thuyết): Động từ nào có thể đi với CẢ V-ing và To V?", options: ["A. dislike", "B. fancy", "C. hate", "D. enjoy"], ans: 2,
+        exp: genExp("Tìm động từ đi được với cả 2 dạng.", "dislike: chỉ đi với V-ing.", "fancy: chỉ đi với V-ing.", "hate: đi với cả V-ing và To V.", "enjoy: chỉ đi với V-ing.", "Chọn C vì 'hate' thuộc nhóm (like, love, hate, prefer) có thể đi với cả 2 dạng mà không (hoặc ít) đổi nghĩa.", "A, B, D sai vì chúng thuộc nhóm CHỈ đi với V-ing.")
+    });
+
+    // --- PHẦN 2: 15 CÂU VẬN DỤNG (MCQ) ---
+    db.push({
+        type: "mcq", q: "Câu 11 (Vận dụng): Thomas adores _________ in the mountains during winter.", options: ["A. snowboarding", "B. to snowboard", "C. snowboard", "D. snowboards"], ans: 0,
+        exp: genExp("Thomas cực kỳ thích trượt tuyết trên núi vào mùa đông.", "snowboarding: V-ing.", "to snowboard: To V.", "snowboard: V nguyên mẫu.", "snowboards: V thêm s.", "Chọn A vì sau động từ 'adore' BẮT BUỘC dùng V-ing.", "B, C, D sai ngữ pháp dạng động từ.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 12 (Vận dụng): Linda detests _________ puzzles. She thinks it's boring.", options: ["A. do", "B. doing", "C. to do", "D. does"], ans: 1,
+        exp: genExp("Linda ghét cay ghét đắng việc giải đố. Cô ấy nghĩ nó thật nhàm chán.", "do: V nguyên mẫu.", "doing: V-ing.", "to do: To V.", "does: V thêm es.", "Chọn B vì sau động từ 'detest' BẮT BUỘC dùng V-ing.", "A, C, D sai ngữ pháp.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 13 (Vận dụng): My younger brother is addicted to _________ TV all day.", options: ["A. watch", "B. watches", "C. to watch", "D. watching"], ans: 3,
+        exp: genExp("Em trai tôi nghiện xem tivi cả ngày.", "watch: V nguyên mẫu.", "watches: V thêm es.", "to watch: To V.", "watching: V-ing.", "Chọn D vì cụm từ 'addicted to' yêu cầu V-ing ở phía sau (to ở đây là giới từ, không phải to-infinitive).", "A, B, C sai ngữ pháp.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 14 (Vận dụng): I am into _________ football with my friends after school.", options: ["A. playing", "B. play", "C. plays", "D. to play"], ans: 0,
+        exp: genExp("Tôi đam mê chơi bóng đá với bạn bè sau giờ học.", "playing (V-ing)", "play (V nguyên mẫu)", "plays (V số ít)", "to play (To V)", "Chọn A vì sau giới từ 'into' phải là V-ing.", "B, C, D chia sai động từ.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 15 (Vận dụng): Are you interested _________ reading comic books?", options: ["A. of", "B. on", "C. in", "D. at"], ans: 2,
+        exp: genExp("Bạn có hứng thú với việc đọc truyện tranh không?", "of", "on", "in", "at", "Chọn C vì tính từ 'interested' luôn đi kèm với giới từ 'in'.", "A, B, D sai giới từ.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 16 (Vận dụng): She is a big fan _________ pop music.", options: ["A. of", "B. in", "C. with", "D. to"], ans: 0,
+        exp: genExp("Cô ấy là một người hâm mộ lớn của nhạc pop.", "of: của", "in: trong", "with: với", "to: tới", "Chọn A vì cụm danh từ cố định là 'a big fan of' (người hâm mộ của...).", "B, C, D dùng sai giới từ.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 17 (Vận dụng): My sister is keen _________ doing DIY.", options: ["A. in", "B. of", "C. about", "D. on"], ans: 3,
+        exp: genExp("Chị gái tôi rất say mê làm đồ thủ công (DIY).", "in", "of", "about", "on", "Chọn D vì 'keen' BẮT BUỘC đi với giới từ 'on'.", "A, B, C sai giới từ.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 18 (Vận dụng): We love _________ to the cinema on weekends.", options: ["A. gone", "B. goes", "C. going", "D. go"], ans: 2,
+        exp: genExp("Chúng tôi thích đi xem phim vào cuối tuần.", "gone (V3)", "goes (V-es)", "going (V-ing)", "go (V0)", "Chọn C vì sau 'love' có thể dùng V-ing hoặc To V. Trong 4 đáp án chỉ có V-ing là 'going' phù hợp.", "A, B, D sai dạng động từ.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 19 (Vận dụng): He is crazy _________ doing origami.", options: ["A. on", "B. about", "C. in", "D. for"], ans: 1,
+        exp: genExp("Anh ấy phát cuồng vì việc gấp giấy origami.", "on", "about", "in", "for", "Chọn B vì thành ngữ là 'crazy about' (cuồng cái gì đó).", "A, C, D dùng sai giới từ.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 20 (Vận dụng): They are really fond _________ eating Thai food.", options: ["A. of", "B. in", "C. on", "D. at"], ans: 0,
+        exp: genExp("Họ thực sự rất yêu thích việc ăn đồ ăn Thái.", "of", "in", "on", "at", "Chọn A vì tính từ 'fond' đi với giới từ 'of'.", "B, C, D sai giới từ.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 21 (Vận dụng): My mom enjoys _________ yoga every morning.", options: ["A. do", "B. does", "C. doing", "D. to do"], ans: 2,
+        exp: genExp("Mẹ tôi thích tập yoga mỗi buổi sáng.", "do (V0)", "does (V-es)", "doing (V-ing)", "to do (To V)", "Chọn C vì 'enjoy' CHỈ đi với V-ing.", "A, B sai dạng. D (to do) là bẫy vì enjoy không đi với to V.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 22 (Vận dụng): I don't fancy _________ out in this rain.", options: ["A. go", "B. going", "C. to go", "D. goes"], ans: 1,
+        exp: genExp("Tôi không muốn đi ra ngoài trong cơn mưa này.", "go (V0)", "going (V-ing)", "to go (To V)", "goes (V-es)", "Chọn B vì 'fancy' CHỈ đi với V-ing.", "A, C, D sai ngữ pháp.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 23 (Vận dụng): He hates _________ up early.", options: ["A. gets", "B. to getting", "C. get", "D. getting"], ans: 3,
+        exp: genExp("Anh ấy ghét thức dậy sớm.", "gets (V-s)", "to getting (sai cấu trúc hoàn toàn)", "get (V0)", "getting (V-ing)", "Chọn D vì 'hate' có thể đi với V-ing (getting) hoặc To V (to get). Trong các đáp án chỉ có D đúng.", "A, C sai dạng. B sai vì thừa chữ to.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 24 (Vận dụng - Ngữ âm): Từ nào có phát âm <u>u</u> khác biệt?", options: ["A. f<u>u</u>n", "B. s<u>u</u>n", "C. h<u>u</u>rt", "D. r<u>u</u>n"], ans: 2,
+        exp: genExp("Tìm từ có âm gạch chân khác các từ còn lại.", "A. fun /fʌn/ (âm ʌ ngắn).", "B. sun /sʌn/ (âm ʌ ngắn).", "C. hurt /hɜːt/ (âm ɜː dài).", "D. run /rʌn/ (âm ʌ ngắn).", "Chọn C vì có âm /ɜː/ dài, khác với 3 từ kia là âm /ʌ/ ngắn.", "A, B, D sai vì chúng có cùng 1 âm.")
+    });
+    db.push({
+        type: "mcq", q: "Câu 25 (Vận dụng - Tìm lỗi sai): She <u>is</u> very <u>fond in</u> <u>listening</u> to <u>music</u>.", options: ["A. is", "B. fond in", "C. listening", "D. music"], ans: 1,
+        exp: genExp("Cô ấy rất thích nghe nhạc. (Tìm phần gạch chân bị sai)", "A. is: tobe chia đúng cho She.", "B. fond in: sai giới từ.", "C. listening: V-ing đúng sau giới từ.", "D. music: danh từ đúng.", "Chọn B vì lỗi sai nằm ở cụm này. Phải sửa thành 'fond of'.", "A, C, D đều đúng ngữ pháp nên không chọn.")
+    });
+
+    // --- PHẦN 3: 15 CÂU ĐIỀN KHUYẾT (GAP FILL) ---
+    for(let i = 26; i <= 40; i++) {
+        // Tự động tạo 15 câu Gap Fill đa dạng dựa trên các cấu trúc đã học
+        const gapData = [
+            { q: "She is hooked <span class='gap'>___</span> taking photos.", opts: ["in", "on", "of", "at"], ans: 1, expT: "hooked on (bị mê hoặc)", dung: "hooked đi với on" },
+            { q: "We prefer <span class='gap'>___</span> books to watching TV.", opts: ["read", "reads", "reading", "to read"], ans: 2, expT: "prefer V-ing to V-ing (thích làm gì hơn làm gì)", dung: "prefer + V-ing" },
+            { q: "I am really <span class='gap'>___</span> into playing guitar.", opts: ["am", "is", "are", "be"], ans: 0, expT: "Tobe into (đam mê)", dung: "I đi với am, nhưng khoan, câu này thừa chữ am ở đề bài? Dùng I am really am into? À bẫy! Đáp án là bỏ trống hoặc câu gốc sửa lại: I <span class='gap'>___</span> really into...", sửa: true },
+            { q: "He is a big <span class='gap'>___</span> of horror movies.", opts: ["fan", "interested", "keen", "addicted"], ans: 0, expT: "a big fan of (người hâm mộ)", dung: "cụm danh từ a big fan" },
+            { q: "They dislike <span class='gap'>___</span> up the room.", opts: ["tidying", "tidy", "to tidy", "tidies"], ans: 0, expT: "dislike + V-ing (không thích)", dung: "dislike + V-ing" },
+            { q: "Are you fond <span class='gap'>___</span> English?", opts: ["of", "in", "on", "about"], ans: 0, expT: "fond of (yêu thích)", dung: "fond đi với of" },
+            { q: "My dad is interested <span class='gap'>___</span> gardening.", opts: ["in", "on", "at", "with"], ans: 0, expT: "interested in (quan tâm)", dung: "interested đi với in" },
+            { q: "She adores <span class='gap'>___</span> out with friends.", opts: ["hang", "hanging", "to hang", "hangs"], ans: 1, expT: "adore + V-ing (mê mẩn)", dung: "adore + V-ing" },
+            { q: "I am crazy <span class='gap'>___</span> K-pop.", opts: ["for", "with", "about", "in"], ans: 2, expT: "crazy about (cuồng nhiệt)", dung: "crazy đi với about" },
+            { q: "Peter is addicted <span class='gap'>___</span> his smartphone.", opts: ["to", "in", "on", "at"], ans: 0, expT: "addicted to (bị nghiện)", dung: "addicted đi với to" },
+            { q: "We enjoy <span class='gap'>___</span> time together.", opts: ["spend", "spending", "to spend", "spends"], ans: 1, expT: "enjoy + V-ing (tận hưởng)", dung: "enjoy + V-ing" },
+            { q: "I <span class='gap'>___</span> detest washing the dishes.", opts: ["am", "is", "do", "(không điền gì)"], ans: 3, expT: "detest (động từ thường)", dung: "detest là động từ thường nên không dùng tobe phía trước, chủ ngữ I đi thẳng với detest." },
+            { q: "She is keen on <span class='gap'>___</span> DIY projects.", opts: ["make", "making", "to make", "makes"], ans: 1, expT: "keen on + V-ing (say mê)", dung: "sau giới từ on dùng V-ing" },
+            { q: "Do you fancy <span class='gap'>___</span> a cup of tea?", opts: ["have", "having", "to have", "has"], ans: 1, expT: "fancy + V-ing (thích/muốn)", dung: "fancy + V-ing" },
+            { q: "He hates <span class='gap'>___</span> in traffic jams.", opts: ["stand", "to standing", "standing", "stands"], ans: 2, expT: "hate + V-ing/To V (ghét)", dung: "standing đúng dạng V-ing. (to standing sai vì thừa to)" }
+        ];
+
+        let item = gapData[i - 26];
+        if(item.sửa) {
+            item.q = "I <span class='gap'>___</span> really into playing guitar."; // sửa lại câu bị lỗi nháp
+            item.opts = ["am", "is", "are", "be"];
+            item.ans = 0;
+            item.dung = "Chủ ngữ I đi với tobe là am";
+        }
+
+        db.push({
+            type: "gap", q: `Câu ${i} (Điền từ): ${item.q}`, options: item.opts, ans: item.ans,
+            exp: genExp("Kiểm tra cấu trúc: " + item.expT, item.opts[0], item.opts[1], item.opts[2], item.opts[3], "Chọn đáp án đúng vì: " + item.dung, "Các đáp án còn lại sai ngữ pháp hoặc sai cụm từ cố định (Collocation).")
+        });
+    }
+
+    let currentIdx = 0;
+    let score = 0;
+    let answered = false;
+
+    function startQuiz() {
+        document.getElementById('vocab-screen').style.display = 'none';
+        document.getElementById('quiz-screen').style.display = 'block';
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        answered = false;
+        const q = db[currentIdx];
+        document.getElementById('progress-text').innerText = `Câu ${currentIdx + 1} / ${db.length}`;
+        document.getElementById('question-text').innerHTML = q.q;
+        
+        const optsContainer = document.getElementById('options-container');
+        optsContainer.innerHTML = '';
+        document.getElementById('explanation-box').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
+
+        if(q.type === 'mcq') {
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-3d option-btn';
+                btn.innerHTML = opt;
+                btn.onclick = () => handleAnswer(btn, idx, q.ans);
+                optsContainer.appendChild(btn);
+            });
+        } else if (q.type === 'gap') {
+            optsContainer.innerHTML = `<p style="color:var(--text-muted); font-style:italic;">* Bấm vào chỗ trống (dấu gạch ngang màu vàng) trên câu hỏi để chọn từ điền vào nhé!</p>`;
+            setTimeout(() => {
+                const gap = document.querySelector('.gap');
+                if(gap) gap.onclick = (e) => showGapPopup(e, q);
+            }, 50);
+        }
+    }
+
+    function showGapPopup(e, q) {
+        if(answered) return;
+        const popup = document.getElementById('gap-popup');
+        popup.innerHTML = '';
+        popup.style.display = 'block';
+        
+        // Tính toán vị trí hiển thị popup
+        const rect = e.target.getBoundingClientRect();
+        popup.style.left = Math.max(10, rect.left) + 'px';
+        popup.style.top = (rect.bottom + window.scrollY + 10) + 'px';
+
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.innerHTML = opt;
+            btn.onclick = () => {
+                popup.style.display = 'none';
+                handleGapAnswer(idx, q.ans, opt);
+            };
+            popup.appendChild(btn);
+        });
+    }
+
+    // Đóng popup khi click ra ngoài
+    document.addEventListener('click', function(e) {
+        const popup = document.getElementById('gap-popup');
+        if(!e.target.classList.contains('gap') && !popup.contains(e.target)) {
+            popup.style.display = 'none';
+        }
+    });
+
+    function handleGapAnswer(selectedIdx, correctIdx, text) {
+        answered = true;
+        const gap = document.querySelector('.gap');
+        gap.innerText = text;
+        
+        if(selectedIdx === correctIdx) {
+            gap.classList.add('filled-correct');
+            processCorrect();
+        } else {
+            gap.classList.add('filled-wrong');
+            processWrong();
+        }
+        showExplanation(db[currentIdx].exp);
+    }
+
+    function handleAnswer(btn, selectedIdx, correctIdx) {
+        if(answered) return;
+        answered = true;
+        
+        const allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true);
+
+        if(selectedIdx === correctIdx) {
+            btn.classList.add('correct-btn');
+            processCorrect();
+        } else {
+            btn.classList.add('wrong-btn');
+            allBtns[correctIdx].classList.add('correct-btn');
+            processWrong();
+        }
+        showExplanation(db[currentIdx].exp);
+    }
+
+    function processCorrect() {
+        score++;
+        playDing();
+        fireConfetti();
+    }
+
+    function processWrong() {
+        playWrong();
+    }
+
+    function showExplanation(htmlContent) {
+        const expBox = document.getElementById('explanation-box');
+        expBox.innerHTML = htmlContent;
+        expBox.style.display = 'block';
+        
+        // Hiện nút Tiếp theo hoặc Nộp bài
+        if(currentIdx < db.length - 1) {
+            document.getElementById('next-btn').style.display = 'block';
+        } else {
+            document.getElementById('submit-btn').style.display = 'block';
+        }
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        loadQuestion();
+    }
+
+    function showResult() {
+        document.getElementById('quiz-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        document.getElementById('score-text').innerText = `${score} / ${db.length}`;
+        
+        const feedback = document.getElementById('feedback-text');
+        const praises = [
+            "Xuất sắc! Em là học sinh cưng của Ms Tuyết Mai rồi đó! 😍",
+            "Đỉnh của chóp! Giữ vững phong độ này nhé! 🌟",
+            "Trình độ 'Pro' rồi, chúc mừng em! 🚀"
+        ];
+        const encourages = [
+            "Khá lắm! Cố gắng ôn lại các câu sai để hoàn hảo hơn nhé! 💪",
+            "Sắp tới đích rồi, học kỹ phần giới từ thêm chút nữa nha! 😉"
+        ];
+        const trys = [
+            "Đừng buồn! Hãy đọc lại phần Từ Vựng Mất Gốc ở đầu bài và làm lại nhé! ❤️",
+            "Thất bại là mẹ thành công! Làm lại lần nữa chắc chắn em sẽ full điểm! 🔥"
+        ];
+
+        if(score === db.length) feedback.innerText = praises[0];
+        else if(score >= 35) feedback.innerText = praises[1];
+        else if(score >= 25) feedback.innerText = encourages[0];
+        else feedback.innerText = trys[0];
+    }
+
+</script>
+</body>
+</html>
